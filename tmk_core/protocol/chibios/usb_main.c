@@ -645,6 +645,7 @@ static bool usb_request_hook_cb(USBDriver *usbp) {
     for (int i = 0; i < NUM_USB_DRIVERS; i++) {
         if (drivers.array[i].config.int_in) {
             // NOTE: Assumes that we only have one serial driver
+            // TODO(ibash) here
             return qmkusbRequestsHook(usbp);
         }
     }
