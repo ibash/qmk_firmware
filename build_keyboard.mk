@@ -228,19 +228,23 @@ endif
 # Determine and set parameters based on the keyboard's processor family.
 # We can assume a ChibiOS target When MCU_FAMILY is defined since it's
 # not used for LUFA
-ifdef MCU_FAMILY
-    PLATFORM=CHIBIOS
-    PLATFORM_KEY=chibios
-    FIRMWARE_FORMAT?=bin
-else ifdef ARM_ATSAM
-    PLATFORM=ARM_ATSAM
-    PLATFORM_KEY=arm_atsam
-    FIRMWARE_FORMAT=bin
-else
-    PLATFORM=AVR
-    PLATFORM_KEY=avr
-    FIRMWARE_FORMAT?=hex
-endif
+PLATFORM=RIOT
+PLATFORM_KEY=riot
+FIRMWARE_FORMAT?=bin
+
+#ifdef MCU_FAMILY
+    #PLATFORM=CHIBIOS
+    #PLATFORM_KEY=chibios
+    #FIRMWARE_FORMAT?=bin
+#else ifdef ARM_ATSAM
+    #PLATFORM=ARM_ATSAM
+    #PLATFORM_KEY=arm_atsam
+    #FIRMWARE_FORMAT=bin
+#else
+    #PLATFORM=AVR
+    #PLATFORM_KEY=avr
+    #FIRMWARE_FORMAT?=hex
+#endif
 
 # Find all of the config.h files and add them to our CONFIG_H define.
 CONFIG_H :=
