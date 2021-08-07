@@ -1,0 +1,1 @@
+COMMON_VPATH += $(DRIVER_PATH)/riot
