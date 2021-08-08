@@ -436,9 +436,9 @@ $(foreach OUTPUT,$(OUTPUTS),$(eval $(call GEN_OBJRULE,$(OUTPUT))))
 	$(CC) -E -mmcu=$(MCU) $(CFLAGS) $< -o $@
 
 # Target: clean project.
-clean:
-	$(foreach OUTPUT,$(OUTPUTS), $(REMOVE) -r $(OUTPUT) 2>/dev/null)
-	$(REMOVE) $(BUILD_DIR)/$(TARGET).*
+#clean:
+	#$(foreach OUTPUT,$(OUTPUTS), $(REMOVE) -r $(OUTPUT) 2>/dev/null)
+	#$(REMOVE) $(BUILD_DIR)/$(TARGET).*
 
 show_path:
 	@echo VPATH=$(VPATH)
