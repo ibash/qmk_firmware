@@ -171,10 +171,10 @@ __attribute__((weak)) const uint16_t PROGMEM fn_actions[] = {
 };
 
 /* Macro */
-__attribute__((weak)) const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) { return MACRO_NONE; }
+__attribute__((weak)) const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) { (void) record; (void) id; (void) opt; return MACRO_NONE; }
 
 /* Function */
-__attribute__((weak)) void action_function(keyrecord_t *record, uint8_t id, uint8_t opt) {}
+__attribute__((weak)) void action_function(keyrecord_t *record, uint8_t id, uint8_t opt) { (void) record; (void) id; (void) opt; }
 
 // translates key to keycode
 __attribute__((weak)) uint16_t keymap_key_to_keycode(uint8_t layer, keypos_t key) {

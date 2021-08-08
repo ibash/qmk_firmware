@@ -23,7 +23,7 @@ When no state changes have occured for DEBOUNCE milliseconds, we push the state.
 #    define DEBOUNCE 5
 #endif
 
-void        debounce_init(uint8_t num_rows) {}
+void        debounce_init(uint8_t num_rows) { (void) num_rows; }
 static bool debouncing = false;
 
 #if DEBOUNCE > 0
@@ -43,6 +43,7 @@ void            debounce(matrix_row_t raw[], matrix_row_t cooked[], uint8_t num_
 }
 #else  // no debouncing.
 void debounce(matrix_row_t raw[], matrix_row_t cooked[], uint8_t num_rows, bool changed) {
+    (void) changed;
     for (int i = 0; i < num_rows; i++) {
         cooked[i] = raw[i];
     }

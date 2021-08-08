@@ -109,15 +109,15 @@ void tap_code16(uint16_t code) {
     unregister_code16(code);
 }
 
-__attribute__((weak)) bool process_action_kb(keyrecord_t *record) { return true; }
+__attribute__((weak)) bool process_action_kb(keyrecord_t *record) { (void) record; return true; }
 
 __attribute__((weak)) bool process_record_kb(uint16_t keycode, keyrecord_t *record) { return process_record_user(keycode, record); }
 
-__attribute__((weak)) bool process_record_user(uint16_t keycode, keyrecord_t *record) { return true; }
+__attribute__((weak)) bool process_record_user(uint16_t keycode, keyrecord_t *record) { (void) keycode; (void) record; return true; }
 
 __attribute__((weak)) void post_process_record_kb(uint16_t keycode, keyrecord_t *record) { post_process_record_user(keycode, record); }
 
-__attribute__((weak)) void post_process_record_user(uint16_t keycode, keyrecord_t *record) {}
+__attribute__((weak)) void post_process_record_user(uint16_t keycode, keyrecord_t *record) { (void) keycode; (void) record; }
 
 void reset_keyboard(void) {
     clear_keyboard();
@@ -352,7 +352,7 @@ layer_state_t update_tri_layer_state(layer_state_t state, uint8_t layer1, uint8_
 
 void update_tri_layer(uint8_t layer1, uint8_t layer2, uint8_t layer3) { layer_state_set(update_tri_layer_state(layer_state, layer1, layer2, layer3)); }
 
-void matrix_init_quantum() {
+void matrix_init_quantum(void) {
     magic();
 #if defined(LED_NUM_LOCK_PIN) || defined(LED_CAPS_LOCK_PIN) || defined(LED_SCROLL_LOCK_PIN) || defined(LED_COMPOSE_PIN) || defined(LED_KANA_PIN)
     // TODO: remove calls to led_init_ports from keyboards and remove ifdef
@@ -383,7 +383,7 @@ void matrix_init_quantum() {
     matrix_init_kb();
 }
 
-void matrix_scan_quantum() {
+void matrix_scan_quantum(void) {
 #if defined(AUDIO_ENABLE)
     // There are some tasks that need to be run a little bit
     // after keyboard startup, or else they will not work correctly
@@ -448,6 +448,7 @@ void matrix_scan_quantum() {
 #endif
 
 void api_send_unicode(uint32_t unicode) {
+  (void) unicode;
 #ifdef API_ENABLE
     uint8_t chunk[4];
     dword_to_bytes(unicode, chunk);
@@ -459,6 +460,6 @@ void api_send_unicode(uint32_t unicode) {
 // Override these functions in your keymap file to play different tunes on
 // different events such as startup and bootloader jump
 
-__attribute__((weak)) void startup_user() {}
+__attribute__((weak)) void startup_user(void) {}
 
-__attribute__((weak)) void shutdown_user() {}
+__attribute__((weak)) void shutdown_user(void) {}
