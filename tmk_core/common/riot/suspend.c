@@ -1,8 +1,5 @@
 /* TODO */
 
-#include <ch.h>
-#include <hal.h>
-
 #include "matrix.h"
 #include "action.h"
 #include "action_util.h"
