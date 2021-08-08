@@ -1,7 +1,5 @@
 #include "bootloader.h"
 
-#include <ch.h>
-#include <hal.h>
 #include "wait.h"
 
 /* This code should be checked whether it runs correctly on platforms */

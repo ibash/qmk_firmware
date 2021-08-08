@@ -28,8 +28,7 @@
 #include "i2c_master.h"
 #include <string.h>
 
-__attribute__((weak)) void i2c_init(void) {
-}
+__attribute__((weak)) void i2c_init(void) { }
 
 i2c_status_t i2c_start(uint8_t address) {
   (void) address;
