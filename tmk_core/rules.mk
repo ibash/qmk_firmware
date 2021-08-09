@@ -344,15 +344,15 @@ BEGIN = gccversion sizebefore
 	@$(BUILD_CMD)
 
 
-# define GEN_OBJRULE
-# $1_INCFLAGS := $$(patsubst %,-I%,$$($1_INC))
-# ifdef $1_CONFIG
-# $1_CONFIG_FLAGS += $$(patsubst %,-include %,$$($1_CONFIG))
-# endif
-# $1_CFLAGS = $$(ALL_CFLAGS) $$($1_DEFS) $$($1_INCFLAGS) $$($1_CONFIG_FLAGS) $$(NOLTO_CFLAGS)
-# $1_CXXFLAGS = $$(ALL_CXXFLAGS) $$($1_DEFS) $$($1_INCFLAGS) $$($1_CONFIG_FLAGS) $$(NOLTO_CFLAGS)
-# $1_ASFLAGS = $$(ALL_ASFLAGS) $$($1_DEFS) $$($1_INCFLAGS) $$($1_CONFIG_FLAGS)
-# 
+define GEN_OBJRULE
+$1_INCFLAGS := $$(patsubst %,-I%,$$($1_INC))
+ifdef $1_CONFIG
+$1_CONFIG_FLAGS += $$(patsubst %,-include %,$$($1_CONFIG))
+endif
+$1_CFLAGS = $$(ALL_CFLAGS) $$($1_DEFS) $$($1_INCFLAGS) $$($1_CONFIG_FLAGS) $$(NOLTO_CFLAGS)
+$1_CXXFLAGS = $$(ALL_CXXFLAGS) $$($1_DEFS) $$($1_INCFLAGS) $$($1_CONFIG_FLAGS) $$(NOLTO_CFLAGS)
+$1_ASFLAGS = $$(ALL_ASFLAGS) $$($1_DEFS) $$($1_INCFLAGS) $$($1_CONFIG_FLAGS)
+
 # # Compile: create object files from C source files.
 # $1/%.o : %.c $1/%.d $1/cflags.txt $1/compiler.txt | $(BEGIN)
 # 	@mkdir -p $$(@D)
@@ -410,7 +410,7 @@ BEGIN = gccversion sizebefore
 # 
 # $1/compiler.txt: $1/force
 # 	$$(CC) --version | cmp -s - $$@ || $$(CC) --version > $$@
-# endef
+endef
 
 .PRECIOUS: $(MASTER_OUTPUT)/obj.txt
 $(MASTER_OUTPUT)/obj.txt: $(MASTER_OUTPUT)/force
@@ -429,7 +429,7 @@ DEPS = $(patsubst %.o,%.d,$(patsubst %.a,%.o,$(OBJ)))
 $(DEPS):
 
 
-# $(foreach OUTPUT,$(OUTPUTS),$(eval $(call GEN_OBJRULE,$(OUTPUT))))
+$(foreach OUTPUT,$(OUTPUTS),$(eval $(call GEN_OBJRULE,$(OUTPUT))))
 
 # Create preprocessed source for use in sending a bug report.
 %.i : %.c | $(BEGIN)
