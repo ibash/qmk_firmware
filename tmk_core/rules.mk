@@ -344,73 +344,73 @@ BEGIN = gccversion sizebefore
 	@$(BUILD_CMD)
 
 
-define GEN_OBJRULE
-$1_INCFLAGS := $$(patsubst %,-I%,$$($1_INC))
-ifdef $1_CONFIG
-$1_CONFIG_FLAGS += $$(patsubst %,-include %,$$($1_CONFIG))
-endif
-$1_CFLAGS = $$(ALL_CFLAGS) $$($1_DEFS) $$($1_INCFLAGS) $$($1_CONFIG_FLAGS) $$(NOLTO_CFLAGS)
-$1_CXXFLAGS = $$(ALL_CXXFLAGS) $$($1_DEFS) $$($1_INCFLAGS) $$($1_CONFIG_FLAGS) $$(NOLTO_CFLAGS)
-$1_ASFLAGS = $$(ALL_ASFLAGS) $$($1_DEFS) $$($1_INCFLAGS) $$($1_CONFIG_FLAGS)
-
-# Compile: create object files from C source files.
-$1/%.o : %.c $1/%.d $1/cflags.txt $1/compiler.txt | $(BEGIN)
-	@mkdir -p $$(@D)
-	@$$(SILENT) || printf "$$(MSG_COMPILING) $$<" | $$(AWK_CMD)
-	$$(eval CC_EXEC := $$(CC))
-    ifneq ($$(VERBOSE_C_CMD),)
-	$$(if $$(filter $$(notdir $$(VERBOSE_C_CMD)),$$(notdir $$<)),$$(eval CC_EXEC += -v))
-    endif
-    ifneq ($$(VERBOSE_C_INCLUDE),)
-	$$(if $$(filter $$(notdir $$(VERBOSE_C_INCLUDE)),$$(notdir $$<)),$$(eval CC_EXEC += -H))
-    endif
-	$$(eval CMD := $$(CC_EXEC) -c $$($1_CFLAGS) $$(INIT_HOOK_CFLAGS) $$(GENDEPFLAGS) $$< -o $$@ && $$(MOVE_DEP))
-	@$$(BUILD_CMD)
-    ifneq ($$(DUMP_C_MACROS),)
-	$$(eval CMD := $$(CC) -E -dM $$($1_CFLAGS) $$(INIT_HOOK_CFLAGS) $$(GENDEPFLAGS) $$<)
-	@$$(if $$(filter $$(notdir $$(DUMP_C_MACROS)),$$(notdir $$<)),$$(BUILD_CMD))
-    endif
-
-# Compile: create object files from C++ source files.
-$1/%.o : %.cpp $1/%.d $1/cxxflags.txt $1/compiler.txt | $(BEGIN)
-	@mkdir -p $$(@D)
-	@$$(SILENT) || printf "$$(MSG_COMPILING_CXX) $$<" | $$(AWK_CMD)
-	$$(eval CMD=$$(CC) -c $$($1_CXXFLAGS) $$(INIT_HOOK_CFLAGS) $$(GENDEPFLAGS) $$< -o $$@ && $$(MOVE_DEP))
-	@$$(BUILD_CMD)
-
-$1/%.o : %.cc $1/%.d $1/cxxflags.txt $1/compiler.txt | $(BEGIN)
-	@mkdir -p $$(@D)
-	@$$(SILENT) || printf "$$(MSG_COMPILING_CXX) $$<" | $$(AWK_CMD)
-	$$(eval CMD=$$(CC) -c $$($1_CXXFLAGS) $$(INIT_HOOK_CFLAGS) $$(GENDEPFLAGS) $$< -o $$@ && $$(MOVE_DEP))
-	@$$(BUILD_CMD)
-
-# Assemble: create object files from assembler source files.
-$1/%.o : %.S $1/asflags.txt $1/compiler.txt | $(BEGIN)
-	@mkdir -p $$(@D)
-	@$(SILENT) || printf "$$(MSG_ASSEMBLING) $$<" | $$(AWK_CMD)
-	$$(eval CMD=$$(CC) -c $$($1_ASFLAGS) $$< -o $$@)
-	@$$(BUILD_CMD)
-
-$1/%.a : $1/%.o
-	@mkdir -p $$(@D)
-	@$(SILENT) || printf "Archiving: $$<" | $$(AWK_CMD)
-	$$(eval CMD=$$(AR) rcs $$@ $$<)
-	@$$(BUILD_CMD)
-
-$1/force:
-
-$1/cflags.txt: $1/force
-	echo '$$($1_CFLAGS)' | cmp -s - $$@ || echo '$$($1_CFLAGS)' > $$@
-
-$1/cxxflags.txt: $1/force
-	echo '$$($1_CXXFLAGS)' | cmp -s - $$@ || echo '$$($1_CXXFLAGS)' > $$@
-
-$1/asflags.txt: $1/force
-	echo '$$($1_ASFLAGS)' | cmp -s - $$@ || echo '$$($1_ASFLAGS)' > $$@
-
-$1/compiler.txt: $1/force
-	$$(CC) --version | cmp -s - $$@ || $$(CC) --version > $$@
-endef
+# define GEN_OBJRULE
+# $1_INCFLAGS := $$(patsubst %,-I%,$$($1_INC))
+# ifdef $1_CONFIG
+# $1_CONFIG_FLAGS += $$(patsubst %,-include %,$$($1_CONFIG))
+# endif
+# $1_CFLAGS = $$(ALL_CFLAGS) $$($1_DEFS) $$($1_INCFLAGS) $$($1_CONFIG_FLAGS) $$(NOLTO_CFLAGS)
+# $1_CXXFLAGS = $$(ALL_CXXFLAGS) $$($1_DEFS) $$($1_INCFLAGS) $$($1_CONFIG_FLAGS) $$(NOLTO_CFLAGS)
+# $1_ASFLAGS = $$(ALL_ASFLAGS) $$($1_DEFS) $$($1_INCFLAGS) $$($1_CONFIG_FLAGS)
+# 
+# # Compile: create object files from C source files.
+# $1/%.o : %.c $1/%.d $1/cflags.txt $1/compiler.txt | $(BEGIN)
+# 	@mkdir -p $$(@D)
+# 	@$$(SILENT) || printf "$$(MSG_COMPILING) $$<" | $$(AWK_CMD)
+# 	$$(eval CC_EXEC := $$(CC))
+#     ifneq ($$(VERBOSE_C_CMD),)
+# 	$$(if $$(filter $$(notdir $$(VERBOSE_C_CMD)),$$(notdir $$<)),$$(eval CC_EXEC += -v))
+#     endif
+#     ifneq ($$(VERBOSE_C_INCLUDE),)
+# 	$$(if $$(filter $$(notdir $$(VERBOSE_C_INCLUDE)),$$(notdir $$<)),$$(eval CC_EXEC += -H))
+#     endif
+# 	$$(eval CMD := $$(CC_EXEC) -c $$($1_CFLAGS) $$(INIT_HOOK_CFLAGS) $$(GENDEPFLAGS) $$< -o $$@ && $$(MOVE_DEP))
+# 	@$$(BUILD_CMD)
+#     ifneq ($$(DUMP_C_MACROS),)
+# 	$$(eval CMD := $$(CC) -E -dM $$($1_CFLAGS) $$(INIT_HOOK_CFLAGS) $$(GENDEPFLAGS) $$<)
+# 	@$$(if $$(filter $$(notdir $$(DUMP_C_MACROS)),$$(notdir $$<)),$$(BUILD_CMD))
+#     endif
+# 
+# # Compile: create object files from C++ source files.
+# $1/%.o : %.cpp $1/%.d $1/cxxflags.txt $1/compiler.txt | $(BEGIN)
+# 	@mkdir -p $$(@D)
+# 	@$$(SILENT) || printf "$$(MSG_COMPILING_CXX) $$<" | $$(AWK_CMD)
+# 	$$(eval CMD=$$(CC) -c $$($1_CXXFLAGS) $$(INIT_HOOK_CFLAGS) $$(GENDEPFLAGS) $$< -o $$@ && $$(MOVE_DEP))
+# 	@$$(BUILD_CMD)
+# 
+# $1/%.o : %.cc $1/%.d $1/cxxflags.txt $1/compiler.txt | $(BEGIN)
+# 	@mkdir -p $$(@D)
+# 	@$$(SILENT) || printf "$$(MSG_COMPILING_CXX) $$<" | $$(AWK_CMD)
+# 	$$(eval CMD=$$(CC) -c $$($1_CXXFLAGS) $$(INIT_HOOK_CFLAGS) $$(GENDEPFLAGS) $$< -o $$@ && $$(MOVE_DEP))
+# 	@$$(BUILD_CMD)
+# 
+# # Assemble: create object files from assembler source files.
+# $1/%.o : %.S $1/asflags.txt $1/compiler.txt | $(BEGIN)
+# 	@mkdir -p $$(@D)
+# 	@$(SILENT) || printf "$$(MSG_ASSEMBLING) $$<" | $$(AWK_CMD)
+# 	$$(eval CMD=$$(CC) -c $$($1_ASFLAGS) $$< -o $$@)
+# 	@$$(BUILD_CMD)
+# 
+# $1/%.a : $1/%.o
+# 	@mkdir -p $$(@D)
+# 	@$(SILENT) || printf "Archiving: $$<" | $$(AWK_CMD)
+# 	$$(eval CMD=$$(AR) rcs $$@ $$<)
+# 	@$$(BUILD_CMD)
+# 
+# $1/force:
+# 
+# $1/cflags.txt: $1/force
+# 	echo '$$($1_CFLAGS)' | cmp -s - $$@ || echo '$$($1_CFLAGS)' > $$@
+# 
+# $1/cxxflags.txt: $1/force
+# 	echo '$$($1_CXXFLAGS)' | cmp -s - $$@ || echo '$$($1_CXXFLAGS)' > $$@
+# 
+# $1/asflags.txt: $1/force
+# 	echo '$$($1_ASFLAGS)' | cmp -s - $$@ || echo '$$($1_ASFLAGS)' > $$@
+# 
+# $1/compiler.txt: $1/force
+# 	$$(CC) --version | cmp -s - $$@ || $$(CC) --version > $$@
+# endef
 
 .PRECIOUS: $(MASTER_OUTPUT)/obj.txt
 $(MASTER_OUTPUT)/obj.txt: $(MASTER_OUTPUT)/force
@@ -429,7 +429,7 @@ DEPS = $(patsubst %.o,%.d,$(patsubst %.a,%.o,$(OBJ)))
 $(DEPS):
 
 
-$(foreach OUTPUT,$(OUTPUTS),$(eval $(call GEN_OBJRULE,$(OUTPUT))))
+# $(foreach OUTPUT,$(OUTPUTS),$(eval $(call GEN_OBJRULE,$(OUTPUT))))
 
 # Create preprocessed source for use in sending a bug report.
 %.i : %.c | $(BEGIN)
