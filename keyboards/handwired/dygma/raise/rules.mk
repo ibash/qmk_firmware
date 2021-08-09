@@ -22,5 +22,8 @@ RAW_ENABLE = yes
 MOUSEKEY_ENABLE = yes
 
 QUANTUM_LIB_SRC += i2c_master.c
-SRC += leds.c
-SRC += matrix.c
+# TODO(ibash) instead make these a fully qualified path in the riot module-2 makefile
+#SRC += leds.c
+#SRC += matrix.c
+SRC += keyboards/handwired/dygma/raise/leds.c
+SRC += keyboards/handwired/dygma/raise/matrix.c
