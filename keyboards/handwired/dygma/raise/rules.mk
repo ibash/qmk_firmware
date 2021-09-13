@@ -22,7 +22,8 @@ BLUETOOTH_ENABLE = no       # Enable Bluetooth
 AUDIO_ENABLE = no           # Audio output
 RGB_MATRIX_ENABLE = yes
 RGB_MATRIX_DRIVER = custom
-CUSTOM_MATRIX = yes
+CUSTOM_MATRIX = lite
+DEBOUNCE_TYPE = custom
 
 # TODO(ibash) we don't actually need to enable raw, but there's some side effect
 # in the usb driver this triggers that allows mousekeys to work. The same side
