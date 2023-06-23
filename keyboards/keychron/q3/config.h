@@ -26,6 +26,9 @@
 /* Set 0 if debouncing isn't needed */
 #define DEBOUNCE 1
 
+/* Poll faster */
+#define USB_POLLING_INTERVAL_MS 1
+
 /* RGB Matrix Driver Configuration */
 #define DRIVER_COUNT 2
 #define DRIVER_ADDR_1 0b1110111
@@ -54,8 +57,9 @@
 #define WEAR_LEVELING_LOGICAL_SIZE 2048
 #define WEAR_LEVELING_BACKING_SIZE (WEAR_LEVELING_LOGICAL_SIZE * 2)
 
-#define RGB_MATRIX_DEFAULT_HUE 60
-#define RGB_MATRIX_DEFAULT_SAT 20
+#define RGB_MATRIX_DEFAULT_HUE 3
+#define RGB_MATRIX_DEFAULT_SAT 148
+#define RGB_MATRIX_DEFAULT_VAL 255
 
 // RGB Matrix Animation modes. Explicitly enabled
 // For full list of effects, see:
