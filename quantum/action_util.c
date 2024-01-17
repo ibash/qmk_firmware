@@ -23,6 +23,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "keycode_config.h"
 #include <string.h>
 
+#if defined(REPORT_MODS_SEPARATELY) && defined(REPORT_MODS_DELAY) && ((REPORT_MODS_DELAY) > 0)
+#    include "wait.h"
+#endif // defined(REPORT_MODS_SEPARATELY) && defined(REPORT_MODS_DELAY) && ((REPORT_MODS_DELAY) > 0)
+
 extern keymap_config_t keymap_config;
 
 static uint8_t real_mods = 0;
@@ -290,6 +294,52 @@ void send_6kro_report(void) {
 #else
     static report_keyboard_t last_report;
 
+#    ifdef REPORT_MODS_SEPARATELY
+#        ifdef KEYBOARD_SHARED_EP
+    last_report.report_id = keyboard_report->report_id;
+#        endif // KEYBOARD_SHARED_EP
+
+    /* Remove existing keys that aren't in the intended report. */
+    if (memcmp(keyboard_report->keys, last_report.keys, sizeof(keyboard_report->keys)) != 0) {
+        /* Take the intersection between last_report.keys and keyboard_report->keys, storing it in last_report.keys, ensuring all the keys are at the beginning of the array, and the rest is zeroed out */
+        int j = 0;
+        for (int i = 0; i < KEYBOARD_REPORT_KEYS; ++i) {
+            if (last_report.keys[i] != 0) {
+                bool found = false;
+                for (int k = 0; k < KEYBOARD_REPORT_KEYS; ++k) {
+                    if (last_report.keys[i] == keyboard_report->keys[k]) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) {
+                    last_report.keys[j++] = last_report.keys[i];
+                } else {
+                    last_report.keys[i] = 0;
+                }
+            }
+        }
+        for (; j < KEYBOARD_REPORT_KEYS; ++j) {
+            last_report.keys[j] = 0;
+        }
+
+        host_keyboard_send(&last_report);
+#        if defined(REPORT_MODS_DELAY) && ((REPORT_MODS_DELAY) > 0)
+        wait_ms(REPORT_MODS_DELAY);
+#        endif // defined(REPORT_MODS_DELAY) && ((REPORT_MODS_DELAY) > 0)
+    }
+
+    /* Send the new mods with the intersecting set of keys */
+    if (keyboard_report->mods != last_report.mods) {
+        last_report.mods = keyboard_report->mods;
+
+        host_keyboard_send(&last_report);
+#        if defined(REPORT_MODS_DELAY) && ((REPORT_MODS_DELAY) > 0)
+        wait_ms(REPORT_MODS_DELAY);
+#        endif // defined(REPORT_MODS_DELAY) && ((REPORT_MODS_DELAY) > 0)
+    }
+#    endif     // REPORT_MODS_SEPARATELY
+
     /* Only send the report if there are changes to propagate to the host. */
     if (memcmp(keyboard_report, &last_report, sizeof(report_keyboard_t)) != 0) {
         memcpy(&last_report, keyboard_report, sizeof(report_keyboard_t));
@@ -303,6 +353,32 @@ void send_nkro_report(void) {
     nkro_report->mods = get_mods_for_report();
 
     static report_nkro_t last_report;
+
+#    ifdef REPORT_MODS_SEPARATELY
+    last_report.report_id = nkro_report->report_id;
+
+    /* Remove existing keys that aren't in the intended report. */
+    if (memcmp(nkro_report->bits, last_report.bits, sizeof(nkro_report->bits)) != 0) {
+        for (int i = 0; i < NKRO_REPORT_BITS; ++i) {
+            last_report.bits[i] &= nkro_report->bits[i];
+        }
+
+        host_nkro_send(&last_report);
+#        if defined(REPORT_MODS_DELAY) && ((REPORT_MODS_DELAY) > 0)
+        wait_ms(REPORT_MODS_DELAY);
+#        endif // defined(REPORT_MODS_DELAY) && ((REPORT_MODS_DELAY) > 0)
+    }
+
+    /* Send the new mods with the intersecting set of keys */
+    if (nkro_report->mods != last_report.mods) {
+        last_report.mods = nkro_report->mods;
+
+        host_nkro_send(&last_report);
+#        if defined(REPORT_MODS_DELAY) && ((REPORT_MODS_DELAY) > 0)
+        wait_ms(REPORT_MODS_DELAY);
+#        endif // defined(REPORT_MODS_DELAY) && ((REPORT_MODS_DELAY) > 0)
+    }
+#    endif // REPORT_MODS_SEPARATELY
 
     /* Only send the report if there are changes to propagate to the host. */
     if (memcmp(nkro_report, &last_report, sizeof(report_nkro_t)) != 0) {
