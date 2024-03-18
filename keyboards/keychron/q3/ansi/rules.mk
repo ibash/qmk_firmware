@@ -4,6 +4,8 @@ MCU = STM32L432
 # Bootloader selection
 BOOTLOADER = stm32-dfu
 
+DEBOUNCE_TYPE = sym_defer_pk
+
 # Build Options
 #   change yes to no to disable
 #

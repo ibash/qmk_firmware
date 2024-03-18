@@ -24,7 +24,7 @@
 #define DIODE_DIRECTION ROW2COL
 
 /* Set 0 if debouncing isn't needed */
-#define DEBOUNCE 1
+#define DEBOUNCE 5
 
 /* Poll faster */
 #define USB_POLLING_INTERVAL_MS 1
