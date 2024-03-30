@@ -69,3 +69,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     return true;
 }
+
+void keyboard_post_init_user(void) {
+    debug_enable = true;
+    debug_matrix = true;
+}

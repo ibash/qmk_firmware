@@ -31,3 +31,6 @@
 
 /* Encoder Configuration*/
 #define ENCODER_DEFAULT_POS 0x3
+
+#define REPORT_MODS_SEPARATELY 1
+#define REPORT_MODS_DELAY 20

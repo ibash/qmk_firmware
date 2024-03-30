@@ -25,3 +25,5 @@
 /* Enable CapsLcok LED */
 #define CAPS_LOCK_LED_INDEX 50
 
+//#define REPORT_MODS_SEPARATELY 1
+//#define REPORT_MODS_DELAY 10

@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "timer.h"
 #include "keycode_config.h"
 #include <string.h>
+#include "print.h"
 
 #if defined(REPORT_MODS_SEPARATELY) && defined(REPORT_MODS_DELAY) && ((REPORT_MODS_DELAY) > 0)
 #    include "wait.h"
@@ -295,6 +296,9 @@ void send_6kro_report(void) {
     static report_keyboard_t last_report;
 
 #    ifdef REPORT_MODS_SEPARATELY
+
+        dprintf("REPORT MODS 222\n");
+
 #        ifdef KEYBOARD_SHARED_EP
     last_report.report_id = keyboard_report->report_id;
 #        endif // KEYBOARD_SHARED_EP
@@ -355,6 +359,7 @@ void send_nkro_report(void) {
     static report_nkro_t last_report;
 
 #    ifdef REPORT_MODS_SEPARATELY
+        dprintf("REPORT MODS 333\n");
     last_report.report_id = nkro_report->report_id;
 
     /* Remove existing keys that aren't in the intended report. */
